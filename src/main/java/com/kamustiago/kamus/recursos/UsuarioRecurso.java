@@ -1,14 +1,17 @@
 package com.kamustiago.kamus.recursos;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.kamustiago.kamus.dominio.Usuario;
 import com.kamustiago.kamus.dto.UsuarioDTO;
@@ -50,6 +53,18 @@ public class UsuarioRecurso {
 		return ResponseEntity.ok().body(new UsuarioDTO(user));
 	}
 	
+	// para que o end point aceite o objeto, uso o @RequestBody
+	@RequestMapping(method = RequestMethod.POST) 
+	public ResponseEntity<Void> inserir(@RequestBody UsuarioDTO usuarioDto) {		
+		Usuario user = servico.fromDTO(usuarioDto);
+		user = servico.inserir(user);
+		
+		// codigo especifico do spring para colocar um cabeçalho com a URL do recurso criado:
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
+		
+		// o created retorna o codigo 201
+		return ResponseEntity.created(uri).build();
+	}
 	
 
 }
