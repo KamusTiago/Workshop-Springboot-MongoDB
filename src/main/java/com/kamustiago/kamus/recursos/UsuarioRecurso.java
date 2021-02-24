@@ -25,31 +25,31 @@ public class UsuarioRecurso {
 	@Autowired
 	private UsuarioServico servico;
 	
-	// end point rest no caminho user
-	//ResponseEntity<T> foi utilizado para encapsular uma estrutura necessaria para retornar resposta http
-	//com posiveis cabeçalhos, erros, etc
-	//metodo ok() para instanciar responseentity ja com o codigo de resposta http informando "sucesso"
-	//body() vai definir o corpo da resposta a lista que eu montei
+	/** end point rest no caminho user
+	* ResponseEntity<T> foi utilizado para encapsular uma estrutura necessaria para retornar resposta http
+	* com posiveis cabeçalhos, erros, etc
+	* metodo ok() para instanciar responseentity ja com o codigo de resposta http informando "sucesso"
+	 body() vai definir o corpo da resposta a lista que eu montei */
 	@RequestMapping(method = RequestMethod.GET) 
 	public ResponseEntity<List<UsuarioDTO>> findAll() {
 		List<Usuario> lista = servico.findAll();
 		
-		//convertendo uma lista de usuario para usuarioDTO com instrucao lambda
-		//metodo stream faz conversao para streamer para colecao compativel com expessoes lambda
-		//map() vai pegar cada objeto x da lista original e para cada obj que vai ser usuario, retorne new usuario passando o x
-		// e voltando o stream para uma lista uso o Collect( collectors.tolist())	
+		/** convertendo uma lista de usuario para usuarioDTO com instrucao lambda
+		* metodo stream faz conversao para streamer para colecao compativel com expessoes lambda
+		* map() vai pegar cada objeto x da lista original e para cada obj que vai ser usuario, retorne new usuario passando o x
+		* e voltando o stream para uma lista uso o Collect( collectors.tolist()) */	
 		List<UsuarioDTO> listaDto = lista.stream().map(x -> new UsuarioDTO(x)).collect(Collectors.toList());
 		
-		//metodo retorna agor aum listaDTO
+		// metodo retorna agor aum listaDTO 
 		return ResponseEntity.ok().body(listaDto);
 	}
 	
-	//para o argumento id do metodo  findById "casar" com o caminho /{id} é necessario a anotacao @PathVariable  
+	// para o argumento id do metodo  findById "casar" com o caminho /{id} é necessario a anotacao @PathVariable  
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET) 
 	public ResponseEntity<UsuarioDTO> findById(@PathVariable String id) {
 		Usuario user = servico.findById(id);
 		
-		//metodo retorna uma resposta  objeto user convertido para userDTO
+		// metodo retorna uma resposta  objeto user convertido para userDTO
 		return ResponseEntity.ok().body(new UsuarioDTO(user));
 	}
 	
@@ -70,6 +70,19 @@ public class UsuarioRecurso {
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE) 
 	public ResponseEntity<Void> delete(@PathVariable String id) {
 		servico.deletar(id);
+		
+		//metodo retorna uma resposta 204 no content
+		return ResponseEntity.noContent().build();
+	}
+	
+	//endpoint para fazer atualizacao
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT) 
+	public ResponseEntity<Void> update(@RequestBody UsuarioDTO usuarioDto, @PathVariable String id) {		
+		Usuario user = servico.fromDTO(usuarioDto);
+		
+		// setei o id da requisicao no metodo update
+		user.setId(id);
+		user = servico.update(user);
 		
 		//metodo retorna uma resposta 204 no content
 		return ResponseEntity.noContent().build();

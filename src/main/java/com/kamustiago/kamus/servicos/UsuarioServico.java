@@ -41,10 +41,27 @@ public class UsuarioServico {
 		repositorioDoUsuario.deleteById(id);
 	}
 		
+	// metodo update para atualizar usuario
+	public Usuario update(Usuario user) {
+		// Busco o objeto original no banco de dados
+		Usuario usuarioBuscadoNoBancoDeDados = repositorioDoUsuario.findById(user.getId()).orElse(null);
+		updateDados(usuarioBuscadoNoBancoDeDados , user);
+		
+		// salvo no banco de dados o novo usuario = repositorioDoUsuario.save
+		return repositorioDoUsuario.save(usuarioBuscadoNoBancoDeDados);
+	}
+	
+	private void updateDados(Usuario usuarioBuscadoNoBancoDeDados, Usuario user) {
+		usuarioBuscadoNoBancoDeDados.setNome(user.getNome());
+		usuarioBuscadoNoBancoDeDados.setEmail(user.getEmail());	
+	}
+
 	// metodo para pegar um dto e instanciar um usuario
 	public Usuario fromDTO(UsuarioDTO usuarioDto) {
 		return new Usuario(usuarioDto.getId(), usuarioDto.getNome(), usuarioDto.getEmail());
 	}
+	
+	
 }
 	
 	
