@@ -2,11 +2,18 @@ package com.kamustiago.kamus.dominio;
 
 import java.io.Serializable;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 //objetos convertidos em bytes para serem trafegados em rede, gravados em arquivos = Serializable
+//@Document para corresponder uma colecao mongodb, colecao user
+
+@Document(collection="user")
 public class Usuario implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	//atributos da classe usuario
+	@Id //chave
 	private String id;
 	private String nome;
 	private String email;
