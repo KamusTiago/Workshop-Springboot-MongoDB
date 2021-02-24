@@ -53,7 +53,7 @@ public class UsuarioRecurso {
 		return ResponseEntity.ok().body(new UsuarioDTO(user));
 	}
 	
-	// para que o end point aceite o objeto, uso o @RequestBody
+	// para que o end point aceite o objeto, uso o @RequestBody, end point para inserir
 	@RequestMapping(method = RequestMethod.POST) 
 	public ResponseEntity<Void> inserir(@RequestBody UsuarioDTO usuarioDto) {		
 		Usuario user = servico.fromDTO(usuarioDto);
@@ -64,6 +64,15 @@ public class UsuarioRecurso {
 		
 		// o created retorna o codigo 201
 		return ResponseEntity.created(uri).build();
+	}
+	
+	// endpoint para deletar por id
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE) 
+	public ResponseEntity<Void> delete(@PathVariable String id) {
+		servico.deletar(id);
+		
+		//metodo retorna uma resposta 204 no content
+		return ResponseEntity.noContent().build();
 	}
 	
 

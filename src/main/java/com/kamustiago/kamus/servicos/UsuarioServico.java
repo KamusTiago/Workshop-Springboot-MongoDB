@@ -35,6 +35,12 @@ public class UsuarioServico {
 		return repositorioDoUsuario.insert(user);
 	}
 	
+	//metodo para deletar usando o delete
+	public void deletar(String id) {
+		findById(id);
+		repositorioDoUsuario.deleteById(id);
+	}
+		
 	// metodo para pegar um dto e instanciar um usuario
 	public Usuario fromDTO(UsuarioDTO usuarioDto) {
 		return new Usuario(usuarioDto.getId(), usuarioDto.getNome(), usuarioDto.getEmail());
