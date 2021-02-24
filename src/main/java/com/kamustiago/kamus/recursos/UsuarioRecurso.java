@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,5 +40,16 @@ public class UsuarioRecurso {
 		//metodo retorna agor aum listaDTO
 		return ResponseEntity.ok().body(listaDto);
 	}
+	
+	//para o argumento id do metodo  findById "casar" com o caminho /{id} é necessario a anotacao @PathVariable  
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET) 
+	public ResponseEntity<UsuarioDTO> findById(@PathVariable String id) {
+		Usuario user = servico.findById(id);
+		
+		//metodo retorna uma resposta  objeto user convertido para userDTO
+		return ResponseEntity.ok().body(new UsuarioDTO(user));
+	}
+	
+	
 
 }
