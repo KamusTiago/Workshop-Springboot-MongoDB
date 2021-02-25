@@ -1,32 +1,35 @@
 package com.kamustiago.kamus.dominio;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 // objetos convertidos em bytes para serem trafegados em rede, gravados em arquivos = Serializable
-// @Document para corresponder uma colecao mongodb, colecao user
-
-@Document(collection="user")
-public class Usuario implements Serializable{
+//@Document para corresponder uma colecao mongodb, colecao post
+@Document
+public class Post  implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
-	// atributos da classe usuario
-	@Id //chave
+	@Id
 	private String id;
-	private String nome;
-	private String email;
+	private Date data;
+	private String titulo;
+	private String corpo;
 	
-	// construtor padrao 
-	public Usuario() {		
+	private Usuario autor;
+	
+	public Post() {
 	}
 
-	// construtor com argumentos
-	public Usuario(String id, String nome, String email) {
+	public Post(String id, Date date, String titulo, String corpo, Usuario autor) {
+		super();
 		this.id = id;
-		this.nome = nome;
-		this.email = email;
+		this.data = date;
+		this.titulo = titulo;
+		this.corpo = corpo;
+		this.autor = autor;
 	}
 
 	public String getId() {
@@ -37,23 +40,38 @@ public class Usuario implements Serializable{
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
+	public Date getData() {
+		return data;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setData(Date data) {
+		this.data = data;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getTitulo() {
+		return titulo;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
 	}
 
-	// Comparacao apenas por id com hashCod and Equals
+	public String getCorpo() {
+		return corpo;
+	}
+
+	public void setCorpo(String corpo) {
+		this.corpo = corpo;
+	}
+	
+	public Usuario getAutor() {
+		return autor;
+	}
+
+	public void setAutor(Usuario autor) {
+		this.autor = autor;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -70,7 +88,7 @@ public class Usuario implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Usuario other = (Usuario) obj;
+		Post other = (Post) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -78,5 +96,6 @@ public class Usuario implements Serializable{
 			return false;
 		return true;
 	}
+	
 	
 }
