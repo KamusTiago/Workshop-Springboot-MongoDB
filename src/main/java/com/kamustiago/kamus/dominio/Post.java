@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import com.kamustiago.kamus.dto.AutorDTO;
 
 // objetos convertidos em bytes para serem trafegados em rede, gravados em arquivos = Serializable
-//@Document para corresponder uma colecao mongodb, colecao post
+// @Document para corresponder uma colecao mongodb, colecao post
 @Document
 public class Post  implements Serializable{
 	private static final long serialVersionUID = 1L;

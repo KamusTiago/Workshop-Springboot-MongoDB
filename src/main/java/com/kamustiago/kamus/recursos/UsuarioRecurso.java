@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.kamustiago.kamus.dominio.Post;
 import com.kamustiago.kamus.dominio.Usuario;
 import com.kamustiago.kamus.dto.UsuarioDTO;
 import com.kamustiago.kamus.servicos.UsuarioServico;
@@ -34,10 +35,10 @@ public class UsuarioRecurso {
 	public ResponseEntity<List<UsuarioDTO>> findAll() {
 		List<Usuario> lista = servico.findAll();
 		
-		/** convertendo uma lista de usuario para usuarioDTO com instrucao lambda
-		* metodo stream faz conversao para streamer para colecao compativel com expessoes lambda
-		* map() vai pegar cada objeto x da lista original e para cada obj que vai ser usuario, retorne new usuario passando o x
-		* e voltando o stream para uma lista uso o Collect( collectors.tolist()) */	
+	/** convertendo uma lista de usuario para usuarioDTO com instrucao lambda
+	* metodo stream faz conversao para streamer para colecao compativel com expessoes lambda
+	* map() vai pegar cada objeto x da lista original e para cada obj que vai ser usuario, retorne new usuario passando o x
+	* e voltando o stream para uma lista uso o Collect( collectors.tolist()) */	
 		List<UsuarioDTO> listaDto = lista.stream().map(x -> new UsuarioDTO(x)).collect(Collectors.toList());
 		
 		// metodo retorna agor aum listaDTO 
@@ -88,5 +89,10 @@ public class UsuarioRecurso {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@RequestMapping(value="/{id}/posts",method = RequestMethod.GET) 
+	public ResponseEntity<List<Post>> findPosts(@PathVariable String id) {
+		Usuario user = servico.findById(id);
+		return ResponseEntity.ok().body(user.getPosts());
+	}
 
 }

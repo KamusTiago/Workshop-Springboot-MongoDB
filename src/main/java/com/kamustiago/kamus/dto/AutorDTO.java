@@ -14,7 +14,7 @@ public class AutorDTO implements Serializable {
 	public AutorDTO() {
 	}
 	
-	//Construtor com sobrecarga para instanciar a partir do objeto do tipo entidade usuario
+	// Construtor com sobrecarga para instanciar a partir do objeto do tipo entidade usuario
 	public AutorDTO(Usuario objetoUsuario) {
 		id = objetoUsuario.getId();
 		nome = objetoUsuario.getNome();

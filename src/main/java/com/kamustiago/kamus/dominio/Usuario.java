@@ -22,7 +22,7 @@ public class Usuario implements Serializable{
 	private String email;
 	
 	/** para evitar que o trafego de dados na rede seja sobrecarregado por requisicoes, ja que iria trazer todos os usuarios
-	 * e seus posts, eu coloco o lazy = true para garantir que os posts sejam carregados apenas se eu explicitamente acessá-los
+	 * e seus posts, eu coloco o lazy = true como carregamento tardio para garantir que os posts sejam carregados apenas se eu explicitamente acessá-los
 	 */
 	@DBRef(lazy = true)
 	private List<Post> posts = new ArrayList<>(); // Por boas praticas eu ja inicio a lista aqui
