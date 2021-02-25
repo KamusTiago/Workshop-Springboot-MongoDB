@@ -51,8 +51,8 @@ public class Instanciacao implements CommandLineRunner {
 		//salvando na colecao de posts
 		postRepositorio.saveAll(Arrays.asList(post1, post2));
 		
-		//salvando na colecao de usuarios
-		usuarioRepositorio.saveAll(Arrays.asList(Tiago, Alex, John));
+		Alex.getPosts().addAll(Arrays.asList(post1, post2));
+		usuarioRepositorio.save(Alex);
 		
 		
 		

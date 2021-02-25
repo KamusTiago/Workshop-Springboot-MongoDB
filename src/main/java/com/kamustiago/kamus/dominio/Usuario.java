@@ -1,8 +1,11 @@
 package com.kamustiago.kamus.dominio;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 // objetos convertidos em bytes para serem trafegados em rede, gravados em arquivos = Serializable
@@ -17,6 +20,12 @@ public class Usuario implements Serializable{
 	private String id;
 	private String nome;
 	private String email;
+	
+	/** para evitar que o trafego de dados na rede seja sobrecarregado por requisicoes, ja que iria trazer todos os usuarios
+	 * e seus posts, eu coloco o lazy = true para garantir que os posts sejam carregados apenas se eu explicitamente acessá-los
+	 */
+	@DBRef(lazy = true)
+	private List<Post> posts = new ArrayList<>(); // Por boas praticas eu ja inicio a lista aqui
 	
 	// construtor padrao 
 	public Usuario() {		
@@ -51,6 +60,14 @@ public class Usuario implements Serializable{
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	public List<Post> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
 	}
 
 	// Comparacao apenas por id com hashCod and Equals
