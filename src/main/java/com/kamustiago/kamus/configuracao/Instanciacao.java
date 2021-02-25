@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import com.kamustiago.kamus.dominio.Post;
 import com.kamustiago.kamus.dominio.Usuario;
 import com.kamustiago.kamus.dto.AutorDTO;
+import com.kamustiago.kamus.dto.ComentarioDTO;
 import com.kamustiago.kamus.repositorio.PostRepositorio;
 import com.kamustiago.kamus.repositorio.UsuarioRepositorio;
 
@@ -24,7 +25,6 @@ public class Instanciacao implements CommandLineRunner {
 	
 	@Autowired
 	private PostRepositorio postRepositorio;
-	
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -47,6 +47,14 @@ public class Instanciacao implements CommandLineRunner {
 		
 		Post post1 = new Post(null, sdf.parse("21/03/2018"), "Partiu viagem", "Vou viajar para SP", new AutorDTO(Alex));
 		Post post2 = new Post(null, sdf.parse("23/03/2018"), "Bom dia", "Acordei feliz", new AutorDTO(Alex)); 
+		
+		ComentarioDTO c1 = new ComentarioDTO("Boa viagem mano!", sdf.parse("21/03/2018"), new AutorDTO(John));
+		ComentarioDTO c2 = new ComentarioDTO("APROVEITE!", sdf.parse("22/03/2018"), new AutorDTO(Tiago));
+		ComentarioDTO c3 = new ComentarioDTO("TENHA UM OTIMO DIA!", sdf.parse("23/03/2018"), new AutorDTO(John));
+		
+		post1.getComentarios().addAll(Arrays.asList(c1,c2));
+		post2.getComentarios().addAll(Arrays.asList(c3));
+		
 		
 		//salvando na colecao de posts
 		postRepositorio.saveAll(Arrays.asList(post1, post2));
