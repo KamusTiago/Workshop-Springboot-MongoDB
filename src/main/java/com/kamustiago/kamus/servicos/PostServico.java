@@ -1,5 +1,7 @@
 package com.kamustiago.kamus.servicos;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,9 @@ public class PostServico {
 		return user;
 	}
 	
+	public List<Post> buscarPorTitulo(String texto){
+		return postRepositorioDosPosts.findByTitleContainingIgnoreCase(texto);
+	}
 	
 }
 	
