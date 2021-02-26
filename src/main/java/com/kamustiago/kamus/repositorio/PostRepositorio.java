@@ -1,5 +1,6 @@
 package com.kamustiago.kamus.repositorio;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -23,4 +24,12 @@ public interface PostRepositorio  extends MongoRepository<Post, String>{
  */
 	@Query("{ 'title' : { $regex: ?0, $options:  'i'} }" )
 	List<Post> procucarPorTitulo(String texto);
+	
+/** Estou utilizando a ocnsulta agora com varios criterios, utilizando o valor logico E e o valor logico OU 
+ *  Utilizo o gte para usar o valor maior ou igual no parametro de datas "dataMinina"
+ *  Utilizo o lte para usar o valor menor ou igual no parametro de datas "dataMaxima" 
+ *  Quando busco os comentarios eu acesso o ComentarioDTO e busco o atributo texto dos comentarios
+ */ 
+	@Query("{ $and: [ {data: {$gte: ?1} } , {data:{$lte: ?2} }, {$or: [ { 'title' : { $regex: ?0, $options:  'i'} }, { 'corpo' : { $regex: ?0, $options:  'i'} }, { 'comentarios.texto' : { $regex: ?0, $options:  'i'} } ] } ] }" )
+	List<Post> procurarPorVariosCriterios(String texto, Date dataMinima, Date dataMaxima);
 }

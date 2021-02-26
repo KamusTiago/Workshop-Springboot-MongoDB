@@ -1,5 +1,6 @@
 package com.kamustiago.kamus.recursos;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,25 @@ public class PostRecurso {
 	public ResponseEntity<List<Post>> findByTitle(@RequestParam(value= "texto", defaultValue="") String texto) {
 		texto = URL.decodificarParam(texto);
 		List<Post> lista = servico.buscarPorTitulo(texto);
+		
+		// metodo retorna uma resposta  objeto user convertido para lista
+		return ResponseEntity.ok().body((lista));
+	}
+	
+/** Fiz o tratamento das datas logo apos decodificar o texto da url e caso de erro na conversao da data, ele vai para 
+ *  a data padrao do java que é 01/01/1970 e caso dê erro na conversao da data maxima eu vou converter para data atual
+ *  do sistema
+ */
+	@RequestMapping(value = "/procurarvarios", method = RequestMethod.GET) 
+	public ResponseEntity<List<Post>> procurarPorVariosCriterios(
+			@RequestParam(value= "texto", defaultValue="") String texto,
+			@RequestParam(value= "dataMinima", defaultValue="") String dataMinima,
+			@RequestParam(value= "dataMaxima", defaultValue="") String dataMaxima) {
+		texto = URL.decodificarParam(texto);
+		Date minima = URL.converterData(dataMinima, new Date(0L));
+		Date maxima = URL.converterData(dataMaxima, new Date());
+		
+		List<Post> lista = servico.procurarPorVariosCriterios(texto, minima, maxima);
 		
 		// metodo retorna uma resposta  objeto user convertido para lista
 		return ResponseEntity.ok().body((lista));
